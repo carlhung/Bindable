@@ -11,15 +11,15 @@
 
 import UIKit
 
-struct Bindable<Value> {
+public struct Bindable<Value> {
     private var observations = [(Value) -> Bool]()
     private var lastValue: Value?
     
-    init(_ value: Value? = nil) {
+    public init(_ value: Value? = nil) {
         lastValue = value
     }
     
-    mutating func addObservation<O: AnyObject>(
+    private mutating func addObservation<O: AnyObject>(
         for object: O,
         handler: @escaping (O, Value) -> Void
     ) {
@@ -40,12 +40,12 @@ struct Bindable<Value> {
         }
     }
     
-    mutating func update(with value: Value) {
+    public mutating func update(with value: Value) {
         lastValue = value
         observations = observations.filter { $0(value) }
     }
     
-    mutating func bind<O: AnyObject, T>(
+    public mutating func bind<O: AnyObject, T>(
         _ sourceKeyPath: KeyPath<Value, T>,
         to object: O,
         _ objectKeyPath: ReferenceWritableKeyPath<O, T>
@@ -56,7 +56,7 @@ struct Bindable<Value> {
         }
     }
     
-    mutating func bind<O: AnyObject, T>(
+    public mutating func bind<O: AnyObject, T>(
         _ sourceKeyPath: KeyPath<Value, T>,
         to object: O,
         // This line is the only change compared to the previous
@@ -70,7 +70,7 @@ struct Bindable<Value> {
         }
     }
     
-    mutating func bind<O: AnyObject, T, R>(
+    public mutating func bind<O: AnyObject, T, R>(
         _ sourceKeyPath: KeyPath<Value, T>,
         to object: O,
         _ objectKeyPath: ReferenceWritableKeyPath<O, R?>,
